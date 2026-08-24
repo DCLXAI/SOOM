@@ -300,12 +300,13 @@ else
 fi
 
 section "Tooling"
-require_command swift
-require_command bun
 require_command node
-require_command npm
 
 if [[ "$skip_tests" == 0 ]]; then
+    require_command swift
+    require_command bun
+    require_command npm
+
     section "Build, lint, and tests"
     run_step "Swift tests" check_swift
     run_step "AI worker build, type-check, and tests" check_worker

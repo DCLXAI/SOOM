@@ -28,7 +28,7 @@ test("server-renders the finished SOOM share experience", async () => {
 
 test("declares durable video storage and removes starter artifacts", async () => {
   const [hosting, packageJson, layout, page] = await Promise.all([
-    readFile(new URL("../.openai/hosting.json", import.meta.url), "utf8"),
+    readFile(new URL("../hosting.defaults.json", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
@@ -36,7 +36,6 @@ test("declares durable video storage and removes starter artifacts", async () =>
   const hostingConfig = JSON.parse(hosting);
   assert.equal(hostingConfig.d1, "DB");
   assert.equal(hostingConfig.r2, "MEDIA");
-  assert.match(hostingConfig.project_id, /^appgprj_/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.match(layout, /\/og\.png/);
   assert.match(layout, /summary_large_image/);
