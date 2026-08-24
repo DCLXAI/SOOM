@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://soom.local/schemas/TaskSpec.v1.json",
+  "title": "SOOM TaskSpec v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "sessionId",
+    "project",
+    "goal",
+    "summary",
+    "tasks",
+    "unresolvedQuestions"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "sessionId": { "type": "string", "minLength": 1 },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "rootPath", "gitBranch", "headCommit"],
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "rootPath": { "type": ["string", "null"] },
+        "gitBranch": { "type": ["string", "null"] },
+        "headCommit": { "type": ["string", "null"] }
+      }
+    },
+    "goal": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "target",
+          "change",
+          "constraints",
+          "acceptanceCriteria",
+          "evidence",
+          "confidence",
+          "assumptions"
+        ],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "target": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["description", "app", "windowTitle", "region"],
+            "properties": {
+              "description": { "type": "string", "minLength": 1 },
+              "app": { "type": ["string", "null"] },
+              "windowTitle": { "type": ["string", "null"] },
+              "region": {
+                "anyOf": [
+                  { "type": "null" },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["x", "y", "width", "height", "coordinateSpace"],
+                    "properties": {
+                      "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "width": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "height": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "coordinateSpace": { "type": "string", "const": "displayNormalizedTopLeft" }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "change": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["instruction", "value"],
+            "properties": {
+              "instruction": { "type": "string", "minLength": 1 },
+              "value": { "type": ["string", "null"] }
+            }
+          },
+          "constraints": { "type": "array", "items": { "type": "string" } },
+          "acceptanceCriteria": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "tMs", "frame", "quote", "position"],
+              "properties": {
+                "kind": { "type": "string", "enum": ["speech", "click", "frame"] },
+                "tMs": { "type": "integer", "minimum": 0 },
+                "frame": { "type": ["string", "null"] },
+                "quote": { "type": ["string", "null"] },
+                "position": {
+                  "anyOf": [
+                    { "type": "null" },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["x", "y", "coordinateSpace"],
+                      "properties": {
+                        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+                        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+                        "coordinateSpace": { "type": "string", "const": "displayNormalizedTopLeft" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "assumptions": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "unresolvedQuestions": { "type": "array", "items": { "type": "string" } }
+  }
+}

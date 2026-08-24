@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleDevelopmentRegion</key>
+  <string>en</string>
+  <key>CFBundleExecutable</key>
+  <string>SOOM</string>
+  <key>CFBundleIdentifier</key>
+  <string>com.soom.macos</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>6.0</string>
+  <key>CFBundleName</key>
+  <string>SOOM</string>
+  <key>CFBundleDisplayName</key>
+  <string>SOOM</string>
+  <key>CFBundleIconFile</key>
+  <string>SOOM</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.6.0</string>
+  <key>CFBundleVersion</key>
+	<string>3</string>
+  <key>LSMinimumSystemVersion</key>
+  <string>15.0</string>
+  <key>LSUIElement</key>
+  <true/>
+  <key>NSHighResolutionCapable</key>
+  <true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>SOOM records your microphone so it can transcribe the changes you describe.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>SOOM shows your webcam in the recorder bubble and composites it into your recording.</string>
+  <key>NSScreenCaptureUsageDescription</key>
+  <string>SOOM records one display and system audio to create an evidence-backed task specification.</string>
+  <key>NSPrincipalClass</key>
+  <string>NSApplication</string>
+</dict>
+</plist>

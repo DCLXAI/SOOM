@@ -1,0 +1,48 @@
+# macOS and Xcode
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+*.dSYM/
+*.dSYM.zip
+*.crash
+*.tsbuildinfo
+
+# JavaScript and TypeScript dependencies/build output
+**/node_modules/
+worker/dist/
+share-web/.next/
+share-web/.vinext/
+share-web/dist/
+share-web/out/
+share-web/.wrangler/
+**/.openai/hosting.json
+share-web/coverage/
+transcoder/dist/
+coverage/
+
+# Local environment and credentials. Examples remain commit-safe.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.p12
+*.cer
+*.provisionprofile
+
+# Logs and local tool state
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.idea/
+.vscode/
+
+# Generated app artifacts and session workspaces
+outputs/
+work/

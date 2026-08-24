@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  swift:
+    name: Swift build and tests
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Toolchain
+        run: swift --version
+      - name: Test
+        run: swift test --parallel
+
+  worker:
+    name: AI worker
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.5
+      - name: Install locked dependencies
+        working-directory: worker
+        run: bun install --frozen-lockfile
+      - name: Dependency audit
+        working-directory: worker
+        run: bun audit
+      - name: Type-check
+        working-directory: worker
+        run: bun run typecheck
+      - name: Test
+        working-directory: worker
+        run: bun test
+      - name: Compile Apple Silicon helper
+        working-directory: worker
+        run: bun run build
+
+  share-web:
+    name: Optional share web
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: share-web/package-lock.json
+      - name: Install locked dependencies
+        working-directory: share-web
+        run: npm ci
+      - name: Type-check
+        working-directory: share-web
+        run: npm run typecheck
+      - name: Production dependency audit
+        working-directory: share-web
+        run: npm audit --omit=dev
+      - name: Lint
+        working-directory: share-web
+        run: npm run lint
+      - name: Build and test
+        working-directory: share-web
+        run: npm test
+
+  transcoder:
+    name: Optional transcoder
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.5
+      - name: Install locked dependencies
+        working-directory: transcoder
+        run: bun install --frozen-lockfile
+      - name: Dependency audit
+        working-directory: transcoder
+        run: bun audit
+      - name: Type-check
+        working-directory: transcoder
+        run: bun run check
+
+  public-source:
+    name: Public source structure
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Check repository and version invariants
+        run: scripts/check-public-release.sh --skip-tests
